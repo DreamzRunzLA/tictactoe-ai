@@ -15,3 +15,6 @@ class TicTacToeNode
   def children
   end
 end
+
+`bundle exec rspec spec/01_tic_tac_toe_node_spec.rb`
+`bundle exec rspec spec/02_super_computer_player_spec.rb`
