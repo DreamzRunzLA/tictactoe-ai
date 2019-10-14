@@ -10,6 +10,39 @@ class TicTacToeNode
   end
 
   def losing_node?(evaluator)
+    if self.board.over?
+      if self.board.winner != evaluator && self.board.won?
+        return true
+      else
+        return false
+      end
+    end
+
+    if evaluator == self.next_mover_mark
+      self.children.all? { |child| child.losing_node?(evaluator) }
+    else
+      self.children.any? { |child| child.losing_node?(evaluator) }
+    end
+
+    #SOLUTION BELOW
+    # if board.over?
+    #   # Note that a loss in this case is explicitly the case where the
+    #   # OTHER person wins: a draw is NOT a loss. Board#won? returns
+    #   # false in the case of a draw.
+    #   return board.won? && board.winner != evaluator
+    # end
+
+    # if self.next_mover_mark == evaluator
+    #   # If it's the turn of the 'evaluator', and no matter where we
+    #   # move the opponent can force a loss, then this is already a
+    #   # lost node.
+    #   self.children.all? { |node| node.losing_node?(evaluator) }
+    # else
+    #   # If it's the opponent's turn, and they have any move where they
+    #   # can eventually force a loss, we assume that the opponent play
+    #   # perfectly and will take that move and eventually beat us.
+    #   self.children.any? { |node| node.losing_node?(evaluator) }
+    # end
   end
 
   def winning_node?(evaluator)
