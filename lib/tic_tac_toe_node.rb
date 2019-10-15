@@ -23,26 +23,6 @@ class TicTacToeNode
     else
       self.children.any? { |child| child.losing_node?(evaluator) }
     end
-
-    #SOLUTION BELOW
-    # if board.over?
-    #   # Note that a loss in this case is explicitly the case where the
-    #   # OTHER person wins: a draw is NOT a loss. Board#won? returns
-    #   # false in the case of a draw.
-    #   return board.won? && board.winner != evaluator
-    # end
-
-    # if self.next_mover_mark == evaluator
-    #   # If it's the turn of the 'evaluator', and no matter where we
-    #   # move the opponent can force a loss, then this is already a
-    #   # lost node.
-    #   self.children.all? { |node| node.losing_node?(evaluator) }
-    # else
-    #   # If it's the opponent's turn, and they have any move where they
-    #   # can eventually force a loss, we assume that the opponent play
-    #   # perfectly and will take that move and eventually beat us.
-    #   self.children.any? { |node| node.losing_node?(evaluator) }
-    # end
   end
 
   def winning_node?(evaluator)
@@ -57,9 +37,11 @@ class TicTacToeNode
       row.each_with_index do |col, k|
 
         if @board.empty?([i,k])
-          new_board = @board.dup
-          new_mark = self.next_mover_mark == :x ? :o : :x
           new_position = [i,k]
+          new_board = @board.dup
+          #Below line was the bit of code that broke everything
+          new_board[new_position] = self.next_mover_mark
+          new_mark = self.next_mover_mark == :x ? :o : :x
           new_node = TicTacToeNode.new(new_board, new_mark, new_position)
           ans << new_node
         end
